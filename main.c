@@ -1,47 +1,60 @@
-#include "shell.h"
-
+#include "main.h"
 /**
- * main - The main shell function
- * @argc: Argument character
- * @argv: Pointer to a pointer to an argument vector
- * @env: Pointer to a pointer to an environment variable
- * Return: Always Success
- */
+*main - main function
+*@ac: arg count
+*@argv: argument vector
+*@env: environ variable
+*Return: 0 on success
+*/
 
-int main(int argc, char **argv, char **env)
+int main(int ac, char **argv)
 {
-	char *usr_line = NULL;
-	size_t usr_len = 0;
-	ssize_t usrinput;
-	int line = 1;
-	char *prompt = "Oluwakuti $ ";
-	char **arr;
-	int j;
-	(void)argc, (void)argv;
+	int status;
+	char *input;
+	char **command;
+	void (*operation)(char **, int status);
+	(void)ac;
+	 
 
+	input = NULL;
+	status = 0;
 	while (1)
 	{
-		if (isatty(0))
-			write(STDOUT_FILENO, prompt, strlen(prompt));
-		usrinput = getline(&usr_line, &usr_len, stdin);
-		handleUserInput(usr_line, usrinput, env);
-		arr = tokenizeUserInput(usr_line);
+		if (isatty(STDIN_FILENO))
+			write(STDOUT_FILENO, "$ ", 2);
 
-		if (handleEnvVars(arr))
-			continue;
+		/* Read input */
+		input = getinput();
 
-		/* Calling the exit_handling function */
-		exit_handling(arr);
-		j = 0;
-
-		while (arr[j] != NULL)
+		if (input == NULL) /* EOF */
 		{
-			ola_printOut("%s\n", arr[j]);
-			j++;
+			if (isatty(STDIN_FILENO))
+				write(STDOUT_FILENO, "\n", 1);
+			free(input);
+			input = NULL;
+			free_grid(command);
+			return (status);
 		}
-		executeCommand(arr);
-		line++;
-		free(arr);
+
+		/* Parse the input*/
+		command = pars_input(input);
+
+		if (command == NULL)
+		{
+			free_grid(command); /********/
+			continue;
+		}
+		free(input);
+		/* If the command is built-in command */
+		operation = handle_builtin(command[0]);
+		if (operation != NULL)
+			{
+				operation(command, status);
+
+			}
+
+	status = execute(command, argv);
 	}
 	return (0);
 }
+

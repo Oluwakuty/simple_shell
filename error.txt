@@ -1,0 +1,12 @@
+#include "main.h"
+
+print_err(char *command, char *argv, int idx)
+{
+
+}
+$ htndk
+sh: 1: htndk: not found
+$ jfijsd
+sh: 2: jfijsd: not found
+$ kjdvnewldk 
+sh: 3: kjdvnewldk: not found
