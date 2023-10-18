@@ -1,43 +1,58 @@
 #include "main.h"
-/**
-*get_cmd - function to get the full path
-*@command: pointer to the command
-*Return: pointer to the full path
-*/
 
-char *get_cmd(char *command)
+
+/**
+ * writePrompt - To display prompt for user to type
+ * Return: void
+ */
+
+void writePrompt(void)
 {
-	struct stat buf;
-	char *full_path;
-	char *token;
+	if (isatty(STDIN_FILENO))
+		write(STDOUT_FILENO, "(Oluwakuti)$ ", 13);
+}
+
+
+/**
+ * cmdGetting - Getting full path
+ * @command: pointer
+ * Return: Success
+ */
+
+char *cmdGetting(char *command)
+{
 	char *path;
+	char *tokinz;
+	struct stat buff;
+	char *full_path;
+	
 	/* if the command already path */
-	if (stat(command, &buf) == 0)
+	if (stat(command, &buff) == 0)
 	{
 		return (_strdup(command));
 	}
-	path = _getenv("PATH");
-	/* if there'se no PATH variable in environ*/
+	path = envGetting("PATH");
+
+	/* if there's no PATH variable in environ*/
 	if (!path)
 		return (NULL);
+	tokinz = strtok(path, ":");
 
-	token = strtok(path, ":");
-	while (token)
+	while (tokinz)
 	{
-		full_path = malloc(sizeof(char) * (_strlen(token) + _strlen(command) + 2));
-		_strcpy(full_path, token);
+		full_path = malloc(sizeof(char) * (_strlen(tokinz) + _strlen(command) + 2));
+		_strcpy(full_path, tokinz);
 		_strcat(full_path, "/");
 		_strcat(full_path, command);
-		if (stat(full_path, &buf) == 0)
+
+		if (stat(full_path, &buff) == 0)
 		{
 			free(path);
 			return (full_path);
-
 		}
 		free(full_path);
-		token = strtok(NULL, ":");
+		tokinz = strtok(NULL, ":");
 	}
 	free(path);
 	return (NULL);
 }
-

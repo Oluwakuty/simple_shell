@@ -1,60 +1,45 @@
 #include "main.h"
+
 /**
-*main - main function
-*@ac: arg count
-*@argv: argument vector
-*@env: environ variable
-*Return: 0 on success
+ * main - The Main Function
+ * @ac: argument count
+ * @argv: argument vector
+ * Return: Alway Success
 */
 
 int main(int ac, char **argv)
 {
-	int status;
-	char *input;
-	char **command;
-	void (*operation)(char **, int status);
+	int statuse = 0;
+	char *usrInput, **cmd;
+	void (*operan)(char **, int);
 	(void)ac;
-	 
 
-	input = NULL;
-	status = 0;
 	while (1)
 	{
-		if (isatty(STDIN_FILENO))
-			write(STDOUT_FILENO, "$ ", 2);
+		writePrompt();
+		usrInput = readInput();
 
-		/* Read input */
-		input = getinput();
-
-		if (input == NULL) /* EOF */
+		if (usrInput == NULL)
 		{
 			if (isatty(STDIN_FILENO))
 				write(STDOUT_FILENO, "\n", 1);
-			free(input);
-			input = NULL;
-			free_grid(command);
-			return (status);
+			free(usrInput);
+			free_grid(cmd);
+			return (statuse);
 		}
-
-		/* Parse the input*/
-		command = pars_input(input);
-
-		if (command == NULL)
+		cmd = inputSplinter(usrInput);
+		if (cmd == NULL)
 		{
-			free_grid(command); /********/
+			free_grid(cmd);
 			continue;
 		}
-		free(input);
-		/* If the command is built-in command */
-		operation = handle_builtin(command[0]);
-		if (operation != NULL)
-			{
-				operation(command, status);
-
-			}
-
-	status = execute(command, argv);
+		free(usrInput);
+		operan = bultin_handler(cmd[0]);
+		if (operan != NULL)
+		{
+			operan(cmd, statuse);
+		}
+		statuse = execution(cmd, argv);
 	}
 	return (0);
 }
-

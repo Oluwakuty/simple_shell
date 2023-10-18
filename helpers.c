@@ -1,108 +1,117 @@
 #include "main.h"
-/**
- *getinput - Function to read line
- *Return: pointer to string (Line)
- */
-char *getinput(void)
-{
-	size_t bufsize;
-	char *input;
 
-	bufsize = 0;
-	input = NULL;
-	/* if get line fails */
-	if (getline(&input, &bufsize, stdin) == -1)
+
+/**
+ * count_tokinz - Tokens count
+ * @usrInput: User line
+ * Return: Success
+*/
+
+int count_tokinz(char *usrInput)
+{
+	char *usrCopy;
+	int count;
+	char *tokinz;
+
+	count = 0;
+	usrCopy = _strdup(usrInput);
+
+	if (usrCopy == NULL)
+		return (-1);
+
+	for (tokinz = strtok(usrCopy, " \n\t"); tokinz != NULL;
+			tokinz = strtok(NULL, " \n\t"))
 	{
+		count++;
+	}
+	free(usrCopy);
+	usrCopy = NULL;
+	return (count);
+}
+
+
+/**
+ *readInput - Function to user line
+ *Return: void
+ */
+
+char *readInput(void)
+{
+	char *userInput;
+	size_t bufferSize;
+
+	userInput = NULL;
+	bufferSize = 0;
+
+	/* Attempt to read a line from stdin */
+	if (getline(&userInput, &bufferSize, stdin) == -1)
+	{
+		/* If getline fails, check if it's due to EOF */
 		if (feof(stdin))
 		{
-			free(input);
+			/* If it's EOF, free the userInput and exit with success */
+			free(userInput);
 			exit(EXIT_SUCCESS);
 		}
 		else
 		{
-			free(input);
-			perror("error ehile reading");
+			/* If getline fails for reasons other than EOF,*/
+			free(userInput);
+			perror("Error while reading input");
 			exit(EXIT_FAILURE);
 		}
 	}
-	return (input);
+	/* If getline succeeds, return the userInput */
+	return (userInput);
 }
 
+
 /**
- *pars_input - split input aand save it in array
- *@input: pointer to string (input)
- * Return: pointer to array pointer
+ * inputSplinter - Function to split user input
+ * @spliter: pointer to str
+ * Return: Success
  */
 
-char **pars_input(char *input)
+char **inputSplinter(char *spliter)
 {
-	int i, j;
-	char *token;
-	int counter;
-	char **command;
+	int j, k;
+	char *tokinz;
+	int count;
+	char **cmd;
 
-	i = 0;
-	if (input == NULL)
-	return (NULL);
-	counter = count_tokens(input);
-	if (counter < 0)
-	return (NULL);
-	command = malloc(sizeof(char *) * (counter + 1));
-	if (command == NULL)
+	j = 0;
+	if (spliter == NULL)
+		return (NULL);
+	count = count_tokinz(spliter);
+
+	if (count < 0)
+		return (NULL);
+	cmd = malloc(sizeof(char *) * (count + 1));
+	if (cmd == NULL)
 	{
-		free(input);
+		free(spliter);
 		return (NULL);
 	}
-	token = strtok(input, " \n\t");
-	if (token == NULL)
+	tokinz = strtok(spliter, " \n\t");
+	if (tokinz == NULL)
 	{
-		free(input);
-		free(command);
+		free(spliter);
+		free(cmd);
 		return (NULL);
-	}
-	while (token)
+	} while (tokinz)
 	{
-		command[i] = malloc(sizeof(char) * (_strlen(token) + 1));
-		if (command[i] == NULL)
+		cmd[j] = malloc(sizeof(char) * (_strlen(tokinz) + 1));
+		if (cmd[j] == NULL)
 		{
-			for (j = 0; j < i; j++)
-				free(command[j]);
-			free(command);
-			free(input);
+			for (k = 0; k < j; k++)
+				free(cmd[k]);
+			free(cmd);
+			free(spliter);
 			return (NULL);
 		}
-		_strcpy(command[i], token);
-		i++;
-		token = strtok(NULL, " \n\t");
+		_strcpy(cmd[j], tokinz);
+		j++;
+		tokinz = strtok(NULL, " \n\t");
 	}
-	command[counter] = NULL;
-	return (command); }
-
-/**
-*count_tokens - count number of tokens
-*@input: input
-*Return: count of tokens
-*/
-
-int count_tokens(char *input)
-{
-	int counter;
-	char *input_copy;
-	char *token;
-
-	counter = 0;
-	input_copy = _strdup(input);
-	if (input_copy == NULL)
-	return (-1);
-	/* Parsing the copy to know words count*/
-	token = strtok(input_copy, " \n\t");
-	/* Calculate input words (tokens) */
-	while (token)
-	{
-		counter++;
-		token = strtok(NULL, " \n\t");
-	}
-	free(input_copy);
-	input_copy = NULL;
-	return (counter);
-}
+	cmd[count] = NULL;
+	return (cmd); }

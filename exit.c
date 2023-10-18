@@ -1,54 +1,56 @@
 #include "main.h"
 
-void (*handle_builtin(char *str))(char **, int status)
+/**
+ * bultin_handler - function to handle exit
+ * @str: character string
+ * Return: void
+ */
+
+void (*bultin_handler(char *str))(char **, int statuse)
 {
-sp_t fun_list[] = {
-{"exit", my_exit},
-{"env", my_env},
-{NULL, NULL}};
-int i;
+	sp_t fun_list[] = {
+		{"exit", exit_me},
+		{"env", env_me},
+		{NULL, NULL}
+	};
+	int j;
 
-i = 0;
-while (fun_list[i].command)
-{
-if (_strcmp (fun_list[i].command, str) == 0)
-return (fun_list[i].func);
-i++; 
-}
-return (NULL);
-}
-
-/* int main()
-{
-    int (*operation)(char *);
-
-    operation = handle_builtin("exit");
-	if (operation != NULL)
-	operation("exit");
-	else
-    printf("fail");
-return (0);
-
-}*/
-
-void my_exit(char **command, int status)
-{
-    free_grid(command);
-    exit(status);
+	for (j = 0; fun_list[j].command; j++)
+	{
+		if (_strcmp(fun_list[j].command, str) == 0)
+			return (fun_list[j].func);
+	}
+	return (NULL);
 }
 
-void my_env(char **command, int status)
-{
-    int i;
-    (void) status;
-    i = 0;
 
-    while (environ[i])
-    {
-        write(STDOUT_FILENO, environ[i], _strlen(environ[i]));
-        write(STDOUT_FILENO, "\n", 1);
-        i++;
-    }
-    free_grid(command);
-    /* return (status);*/
+/**
+ * exit_me - Function to exit
+ * @command: Pointer to pointer to character
+ * @statuse: Integer
+ */
+
+void exit_me(char **command, int statuse)
+{
+	free_grid(command);
+	exit(statuse);
+}
+
+/**
+ * env_me - Function Environemt
+ * @command: Pointer to pointer to character
+ * @statuse: Integer
+ */
+
+void env_me(char **command, int statuse)
+{
+	int j;
+	(void) statuse;
+
+	for (j = 0; environ[j]; j++)
+	{
+		write(STDOUT_FILENO, environ[j], _strlen(environ[j]));
+		write(STDOUT_FILENO, "\n", 1);
+	}
+	free_grid(command);
 }

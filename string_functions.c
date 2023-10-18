@@ -1,115 +1,116 @@
 #include "main.h"
+
 /**
- * _strlen - function that returns the length of a string
- * @s : string
- * Return: lenght of string
+ * _strlen - Returns the length of a string
+ * @s : str
+ * Return: Success
  */
 
 int _strlen(char *s)
 {
-	int i = 0;
+	int j;
 
-	while (s[i] != '\0')
+	for (j = 0; s[j] != '\0'; j++)
 	{
-		i++;
+		return (j);
 	}
-	return (i);
-}
-/**
- * _strcpy - function that copy string
- * @dest : pointer to array
- * @src : pointer to array
- * Return: pointer to the copied array
- */
-
-char *_strcpy(char *dest, char *src)
-{
-	int i;
-
-	i = 0;
-	while (src[i])
-	{
-		dest[i] = src[i];
-		i++;
-	}
-	dest[i] = '\0';
-	return (dest);
+	return(0);
 }
 
-/**
- * _strdup -  creates an array a copy of the string given as a parameter.
- *@str: given array
- *Return: pointer to first string
- */
-char *_strdup(char *str)
-{
-	char *ptr;
-	int i;
-	int size;
 
-	if (str == NULL)
+/**
+ * _strcpy - String Copier
+ * @destination : Array pointer
+ * @source : Array pointer
+ * Return: Success
+ */
+
+char *_strcpy(char *destination, char *source)
+{
+	int j;
+
+	for (j = 0; source[j]; j++)
+	{
+		destination[j] = source[j];
+	}
+	destination[j] = '\0';
+	return (destination);
+}
+
+/**
+ * _strdup -  Parameter Copier
+ * @string: Array
+ * Return: Success
+ */
+
+char *_strdup(char *string)
+{
+	char *pointer;
+	int zisez;
+	int j;
+
+	if (string == NULL)
 	{
 		return (NULL);
 	}
-	for (size = 0; str[size] != '\0'; size++)
+
+	for (zisez = 0; string[zisez] != '\0'; zisez++)
 		continue;
+	pointer = (char *)malloc(zisez + 1);
 
-	ptr = (char *)malloc(size + 1);
-	if (ptr == NULL)
+	if (pointer == NULL)
 	{
 		return (NULL);
 	}
 
-	for (i = 0; i < size; i++)
+	for (j = 0; j < zisez; j++)
 	{
-		*(ptr + i) = *(str + i);
+		*(pointer + j) = *(string + j);
 	}
-	*(ptr + size) = '\0';
-	return (ptr);
+	*(pointer + zisez) = '\0';
+	return (pointer);
 }
 
 /**
- *_strcmp - function that compares two strings
- *@s1: the first pointer
- *@s2: string to be copied
- *
- * Return: integer
+ * _strcmp - Strings comparison
+ * @str1: First pointer string
+ * @str2: second pointer string
+ * Return: Success
  */
 
-int _strcmp(char *s1, char *s2)
+int _strcmp(char *str1, char *str2)
 {
-	size_t i;
+	size_t j = 0;
 
-	for (i = 0; s1[i] != '\0' || s2[i] != '\0'; i++)
+	while (str1[j] != '\0' || str2[j] != '\0')
 	{
-		if (s1[i] != s2[i])
+		if (str1[j] != str2[j])
 		{
-			return (s1[i] - s2[i]);
+			return (str1[j] - str2[j]);
 		}
+		j++;
 	}
 	return (0);
 }
 
 /**
- *_strcat - function that concatenates two strings.
- *@dest: the first pointer
- *@src: string to be copied
- *
- * Return: pointer to string
+ * _strcat - String Concantenation
+ * @source: Copied string
+ * @destination: String
+ * Return: Success
  */
 
-char *_strcat(char *dest, char *src)
+char *_strcat(char *destination, char *source)
 {
-	int destlen =  _strlen(dest);
-	int srclen =  _strlen(src);
-	int i;
+	int j = 0;
+	int lentDest =  _strlen(destination);
+	int lenSrc =  _strlen(source);
 
-
-	for (i = 0; i < srclen; i++)
+	while (j < lenSrc)
 	{
-		dest[destlen + i] = src[i];
+		destination[lentDest + j] = source[j];
+		j++;
 	}
-	dest[destlen + i] = '\0';
-	return (dest);
-
+	destination[lentDest + j] = '\0';
+	return (destination);
 }
