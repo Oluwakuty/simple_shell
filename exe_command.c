@@ -1,5 +1,11 @@
 #include "shell.h"
 
+/**
+ * execmmd - To execute command
+ * @argv: Pointer to pointer to argument vector
+ * Return: Void
+ */
+
 void execmmd(char **argv)
 {
 	char *cmd = NULL;

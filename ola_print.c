@@ -2,7 +2,7 @@
 
 /**
  * ola_print - My custom printf function
- *
+ * @mssg: pointer to a constant character
  * Return: Always return zero
  */
 
@@ -13,7 +13,7 @@ void ola_print(const char *mssg)
 
 /**
  * ola_printOut - My custom printf function
- *
+ * @mssg: pointer to a constant character
  * Return: Always return zero
  */
 
