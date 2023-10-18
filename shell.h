@@ -22,7 +22,7 @@ ssize_t buffer_reading(ino_t formation, char *buffs, ino_t sizebuf);
 void exit_handling(char **arr);
 void setEnvVar(char **arr);
 void unsetEnvVar(char **arr);
-void handleUserInput(char* usr_line, int usrinput, char** env);
+void handleUserInput(char *usr_line, int usrinput, char **env);
 char **tokenizeUserInput(char *usr_line);
 int handleEnvVars(char **arr);
 void executeCommand(char **arr);
