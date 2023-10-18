@@ -88,3 +88,39 @@ void unsetEnvVar(char **arr)
 		perror("unsetenv");
 	}
 }
+
+
+/**
+ * handleUserInput - Handles user inputs
+ * @usr_line: handles user input
+ * @usrinput: interger user input
+ * @env: environemt characer
+ * Return: void
+ */
+
+void handleUserInput(char *usr_line, int usrinput, char **env)
+{
+	if (usrinput == -1)
+	{
+		if (feof(stdin))
+		{
+			/* End of file (Ctrl+D) */
+			return;
+		}
+		else
+		{
+			/* Handle getline error */
+			perror("getline");
+			exit(EXIT_FAILURE);
+		}
+	}
+	/* Remove the trailing newline character */
+	if (usrinput > 0 && usr_line[usrinput - 1] == '\n')
+	{
+		usr_line[usrinput - 1] = '\0';
+	}
+	if (strcmp(usr_line, "env\n") == 0)
+	{
+		env_print(env);
+	}
+}

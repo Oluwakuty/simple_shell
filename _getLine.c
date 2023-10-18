@@ -8,7 +8,7 @@
  * Return: Always success
  */
 
-int getLine(ino_t *formation, char **pointer, size_t *length)
+int getLine(ino_t formation, char **pointer, size_t *length)
 {
 	static char buf[READ_BUF_SIZE];
 	static size_t j, lent;
