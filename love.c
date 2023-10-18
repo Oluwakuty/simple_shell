@@ -1,4 +1,4 @@
-#include "main.h"
+#include "shell.h"
 
 
 /**
@@ -27,6 +27,38 @@ int count_tokinz(char *usrInput)
 	free(usrCopy);
 	usrCopy = NULL;
 	return (count);
+}
+
+
+/**
+ * _strdup -  Parameter Copier
+ * @string: Array
+ * Return: Success
+ */
+
+char *_strdup(char *string)
+{
+	char *pointer;
+	int zisez;
+	int j;
+
+	if (string == NULL)
+	{
+		return (NULL);
+	}
+	for (zisez = 0; string[zisez] != '\0'; zisez++)
+		continue;
+	pointer = (char *)malloc(zisez + 1);
+	if (pointer == NULL)
+	{
+		return (NULL);
+	}
+	for (j = 0; j < zisez; j++)
+	{
+		*(pointer + j) = *(string + j);
+	}
+	*(pointer + zisez) = '\0';
+	return (pointer);
 }
 
 
@@ -63,6 +95,29 @@ char *readInput(void)
 	}
 	/* If getline succeeds, return the userInput */
 	return (userInput);
+}
+
+/**
+ * bultin_handler - function to handle exit
+ * @str: character string
+ * Return: void
+ */
+
+void (*bultin_handler(char *str))(char **, int statuse)
+{
+	sp_t fun_list[] = {
+		{"exit", exit_me},
+		{"env", env_me},
+		{NULL, NULL}
+	};
+	int j;
+
+	for (j = 0; fun_list[j].command; j++)
+	{
+		if (_strcmp(fun_list[j].command, str) == 0)
+			return (fun_list[j].func);
+	}
+	return (NULL);
 }
 
 

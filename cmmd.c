@@ -1,4 +1,4 @@
-#include "main.h"
+#include "shell.h"
 
 
 /**
@@ -14,6 +14,26 @@ void writePrompt(void)
 
 
 /**
+ * _strcpy - String Copier
+ * @destination : Array pointer
+ * @source : Array pointer
+ * Return: Success
+ */
+
+char *_strcpy(char *destination, char *source)
+{
+	int j;
+
+	for (j = 0; source[j]; j++)
+	{
+		destination[j] = source[j];
+	}
+	destination[j] = '\0';
+	return (destination);
+}
+
+
+/**
  * cmdGetting - Getting full path
  * @command: pointer
  * Return: Success
@@ -25,7 +45,7 @@ char *cmdGetting(char *command)
 	char *tokinz;
 	struct stat buff;
 	char *full_path;
-	
+
 	/* if the command already path */
 	if (stat(command, &buff) == 0)
 	{

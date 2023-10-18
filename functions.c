@@ -1,4 +1,4 @@
-#include "main.h"
+#include "shell.h"
 
 /**
  * execution - Carry out the program
@@ -19,7 +19,7 @@ int execution(char **command, char **argv)
 	if (!full_path)
 	{
 		printf("Command unavailable\n");
-		free_grid(command);
+		spaceFree(command);
 		return (127);
 	}
 	/* Calling Fork */
@@ -27,14 +27,14 @@ int execution(char **command, char **argv)
 	if (valFork == -1)
 	{
 		perror(argv[0]);
-		free_grid(command);
+		spaceFree(command);
 		exit(1);
 	}
 	if (valFork == 0)
 	{
 		if (execve(full_path, command, env) == -1)
 		{	perror(argv[0]);
-			free_grid(command);
+			spaceFree(command);
 			free(full_path);
 			full_path = NULL;
 		}
@@ -45,7 +45,7 @@ int execution(char **command, char **argv)
 		{
 			perror("Wait error");
 		}
-		free_grid(command);
+		spaceFree(command);
 		free(full_path);
 	}
 	return (statuse);
@@ -53,23 +53,23 @@ int execution(char **command, char **argv)
 
 
 /**
- * free_grid - Function to free allocated space
- * @grid: character pointer
+ * spaceFree - Function to free allocated space
+ * @freed: character pointer
  */
 
-void free_grid(char **grid)
+void spaceFree(char **freed)
 {
 	int j = 0;
 
-	if (!grid)
+	if (!freed)
 		return;
 
-	while (grid[j])
+	while (freed[j])
 	{
-		free(grid[j]);
-		grid[j] = NULL;
+		free(freed[j]);
+		freed[j] = NULL;
 		j++;
 	}
-	free(grid);
-	grid = NULL;
+	free(freed);
+	freed = NULL;
 }

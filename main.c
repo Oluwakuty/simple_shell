@@ -1,4 +1,4 @@
-#include "main.h"
+#include "shell.h"
 
 /**
  * main - The Main Function
@@ -24,13 +24,13 @@ int main(int ac, char **argv)
 			if (isatty(STDIN_FILENO))
 				write(STDOUT_FILENO, "\n", 1);
 			free(usrInput);
-			free_grid(cmd);
+			spaceFree(cmd);
 			return (statuse);
 		}
 		cmd = inputSplinter(usrInput);
 		if (cmd == NULL)
 		{
-			free_grid(cmd);
+			spaceFree(cmd);
 			continue;
 		}
 		free(usrInput);

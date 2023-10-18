@@ -1,4 +1,5 @@
-#include "main.h"
+#include "shell.h"
+
 
 /**
  * _strlen - Returns the length of a string
@@ -14,62 +15,9 @@ int _strlen(char *s)
 	{
 		return (j);
 	}
-	return(0);
+	return (0);
 }
 
-
-/**
- * _strcpy - String Copier
- * @destination : Array pointer
- * @source : Array pointer
- * Return: Success
- */
-
-char *_strcpy(char *destination, char *source)
-{
-	int j;
-
-	for (j = 0; source[j]; j++)
-	{
-		destination[j] = source[j];
-	}
-	destination[j] = '\0';
-	return (destination);
-}
-
-/**
- * _strdup -  Parameter Copier
- * @string: Array
- * Return: Success
- */
-
-char *_strdup(char *string)
-{
-	char *pointer;
-	int zisez;
-	int j;
-
-	if (string == NULL)
-	{
-		return (NULL);
-	}
-
-	for (zisez = 0; string[zisez] != '\0'; zisez++)
-		continue;
-	pointer = (char *)malloc(zisez + 1);
-
-	if (pointer == NULL)
-	{
-		return (NULL);
-	}
-
-	for (j = 0; j < zisez; j++)
-	{
-		*(pointer + j) = *(string + j);
-	}
-	*(pointer + zisez) = '\0';
-	return (pointer);
-}
 
 /**
  * _strcmp - Strings comparison
@@ -93,6 +41,7 @@ int _strcmp(char *str1, char *str2)
 	return (0);
 }
 
+
 /**
  * _strcat - String Concantenation
  * @source: Copied string
@@ -113,4 +62,35 @@ char *_strcat(char *destination, char *source)
 	}
 	destination[lentDest + j] = '\0';
 	return (destination);
+}
+
+
+/**
+ * envGetting - environment function to get value
+ * @naming: pointer to the key
+ * *Return: Success
+ */
+
+char *envGetting(char *naming)
+{
+	char **envVariable;
+	char *str;
+	char *tokinz;
+	char *val;
+
+	for (envVariable = environ; *envVariable != NULL; envVariable++)
+	{
+		str = _strdup(*envVariable);
+		tokinz = strtok(str, "=");
+
+		if (tokinz != NULL && _strcmp(naming, tokinz) == 0)
+		{
+			tokinz = strtok(NULL, "");
+			val = _strdup(tokinz);
+			free(str);
+			return (val);
+		}
+		free(str);
+	}
+	return (NULL);
 }
