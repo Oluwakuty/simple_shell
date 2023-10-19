@@ -17,7 +17,7 @@ char *_strcpy(char *destination, char *sourcec);
 char *_strdup(char *str);
 int _strcmp(char *str1, char *str2);
 char *_strcat(char *destination, char *source);
-void spaceFree(char **grid);
+void spaceFree(char **freed);
 char *envGetting(char *naming);
 char *cmdGetting(char *command);
 

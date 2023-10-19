@@ -45,34 +45,40 @@ char *cmdGetting(char *command)
 	char *tokinz;
 	struct stat buff;
 	char *full_path;
+	char *pathCopy;
 
-	/* if the command already path */
-	if (stat(command, &buff) == 0)
-	{
-		return (_strdup(command));
-	}
+
 	path = envGetting("PATH");
 
 	/* if there's no PATH variable in environ*/
 	if (!path)
 		return (NULL);
-	tokinz = strtok(path, ":");
+	pathCopy = _strdup(path);
+	tokinz = strtok(pathCopy, ":");
 
 	while (tokinz)
 	{
-		full_path = malloc(sizeof(char) * (_strlen(tokinz) + _strlen(command) + 2));
+		full_path = malloc((_strlen(tokinz) + _strlen(command) + 2));
 		_strcpy(full_path, tokinz);
 		_strcat(full_path, "/");
 		_strcat(full_path, command);
-
+		_strcat(full_path, "\0");
 		if (stat(full_path, &buff) == 0)
 		{
-			free(path);
+			free(pathCopy);
 			return (full_path);
 		}
-		free(full_path);
-		tokinz = strtok(NULL, ":");
+		else
+		{
+			free(full_path);
+			tokinz = strtok(NULL, ":");
+		}
 	}
-	free(path);
+	free(pathCopy);
+	/* if the command already path */
+	if (stat(command, &buff) == 0)
+	{
+		return (command);
+	}
 	return (NULL);
 }

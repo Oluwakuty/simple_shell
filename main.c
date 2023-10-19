@@ -10,9 +10,11 @@
 int main(int ac, char **argv)
 {
 	int statuse = 0;
-	char *usrInput, **cmd;
-	void (*operan)(char **, int);
+	char *usrInput, **command;
+	void (*operan)(char **, int statuse);
 	(void)ac;
+
+	usrInput = NULL;
 
 	while (1)
 	{
@@ -24,22 +26,22 @@ int main(int ac, char **argv)
 			if (isatty(STDIN_FILENO))
 				write(STDOUT_FILENO, "\n", 1);
 			free(usrInput);
-			spaceFree(cmd);
+			spaceFree(command);
 			return (statuse);
 		}
-		cmd = inputSplinter(usrInput);
-		if (cmd == NULL)
+		command = inputSplinter(usrInput);
+		if (command == NULL)
 		{
-			spaceFree(cmd);
+			spaceFree(command);
 			continue;
 		}
 		free(usrInput);
-		operan = bultin_handler(cmd[0]);
+		operan = bultin_handler(command[0]);
 		if (operan != NULL)
 		{
-			operan(cmd, statuse);
+			operan(command, statuse);
 		}
-		statuse = execution(cmd, argv);
+		statuse = execution(command, argv);
 	}
 	return (0);
 }

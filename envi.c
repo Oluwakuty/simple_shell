@@ -12,10 +12,8 @@ int _strlen(char *s)
 	int j;
 
 	for (j = 0; s[j] != '\0'; j++)
-	{
-		return (j);
-	}
-	return (0);
+		;
+	return (j);
 }
 
 
@@ -73,12 +71,12 @@ char *_strcat(char *destination, char *source)
 
 char *envGetting(char *naming)
 {
-	char **envVariable;
+	char **envVariable = environ;
 	char *str;
 	char *tokinz;
 	char *val;
 
-	for (envVariable = environ; *envVariable != NULL; envVariable++)
+	while (envVariable)
 	{
 		str = _strdup(*envVariable);
 		tokinz = strtok(str, "=");
@@ -91,6 +89,7 @@ char *envGetting(char *naming)
 			return (val);
 		}
 		free(str);
+		envVariable++;
 	}
 	return (NULL);
 }
