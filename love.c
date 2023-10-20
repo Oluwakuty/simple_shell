@@ -47,9 +47,9 @@ char *_strdup(char *string)
 		return (NULL);
 	}
 	for (zisez = 0; string[zisez] != '\0'; zisez++)
-	{
-		pointer = (char *)malloc(zisez + 1);
-	}
+		continue;
+	pointer = (char *)malloc(zisez + 1);
+
 	if (pointer == NULL)
 	{
 		return (NULL);
