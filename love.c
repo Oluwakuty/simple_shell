@@ -19,10 +19,11 @@ int count_tokinz(char *usrInput)
 	if (usrCopy == NULL)
 		return (-1);
 
-	for (tokinz = strtok(usrCopy, " \n\t"); tokinz != NULL;
-			tokinz = strtok(NULL, " \n\t"))
+	tokinz = strtok(usrCopy, " \n\t");
+	while (tokinz)
 	{
 		count++;
+		tokinz = strtok(NULL, " \n\t");
 	}
 	free(usrCopy);
 	usrCopy = NULL;
