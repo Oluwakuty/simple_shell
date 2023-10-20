@@ -21,12 +21,16 @@ void exit_me(char **command, int statuse)
 void env_me(char **command, int statuse)
 {
 	int j;
+
+	j = 0;
+
 	(void) statuse;
 
-	for (j = 0; environ[j]; j++)
+	while (environ[j])
 	{
 		write(STDOUT_FILENO, environ[j], _strlen(environ[j]));
 		write(STDOUT_FILENO, "\n", 1);
+		j++;
 	}
 	spaceFree(command);
 }

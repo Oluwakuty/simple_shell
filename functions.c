@@ -42,9 +42,7 @@ int execution(char **command, char **argv)
 	{
 		waitpid(valFork, &statuse, 0);
 		if (statuse == -1)
-		{
 			perror("Wait error");
-		}
 		spaceFree(command);
 		free(full_path);
 	}
